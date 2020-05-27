@@ -19,7 +19,7 @@
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>

@@ -19,6 +19,7 @@ class CreateAsesorsTable extends Migration
             $table->integer('cedula');
             $table->integer('telefono');
             $table->timestamp('edad');
+            $table->integer('year')->null;
             $table->enum('genero',['masculino','femenino']);
             $table->string('cliente');
             $table->enum('sede',['Ruta_N','Puertto_Seco','Buro']);

@@ -2008,20 +2008,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2032,6 +2018,7 @@ __webpack_require__.r(__webpack_exports__);
         cedula: '',
         telefono: '',
         edad: '',
+        year: '',
         genero: '',
         cliente: '',
         sede: ''
@@ -2060,6 +2047,7 @@ __webpack_require__.r(__webpack_exports__);
         cedula: '',
         telefono: '',
         edad: '',
+        year: '',
         genero: '',
         cliente: '',
         sede: ''
@@ -2072,7 +2060,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     editarFormulario: function editarFormulario(item) {
       this.asesor.nombre = item.nombre;
-      this.asesor.descripcion = item.descripcion;
+      this.asesor.cedula = item.cedula;
+      this.asesor.telefono = item.telefono;
+      this.asesor.edad = item.edad;
+      this.asesor.genero = item.genero;
+      this.asesor.cliente = item.cliente;
+      this.asesor.sede = item.sede;
       this.asesor.id = item.id;
       this.modoEditar = true;
     },
@@ -2096,6 +2089,9 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         _this3.asesors[index] = res.data;
+        axios.get('/asesors').then(function (res) {
+          _this3.asesors = res.data;
+        });
       });
     },
     eliminarAsesor: function eliminarAsesor(asesor, index) {
@@ -2116,6 +2112,7 @@ __webpack_require__.r(__webpack_exports__);
         cedula: '',
         telefono: '',
         edad: '',
+        year: '',
         genero: '',
         cliente: '',
         sede: ''
@@ -37696,7 +37693,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "table-responsive" }, [
     _vm.modoEditar
       ? _c(
           "form",
@@ -37786,8 +37783,7 @@ var render = function() {
                   expression: "asesor.edad"
                 }
               ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "datetime", placeholder: "Edad" },
+              attrs: { type: "datetime-local" },
               domProps: { value: _vm.asesor.edad },
               on: {
                 input: function($event) {
@@ -37798,28 +37794,51 @@ var render = function() {
                 }
               }
             }),
+            _c("label", [
+              _vm._v("               Ingrese la fecha de nacimiento")
+            ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.asesor.genero,
-                  expression: "asesor.genero"
-                }
-              ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "text", placeholder: "Genero" },
-              domProps: { value: _vm.asesor.genero },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.asesor.genero,
+                    expression: "asesor.genero"
                   }
-                  _vm.$set(_vm.asesor, "genero", $event.target.value)
+                ],
+                staticClass: "custom-select",
+                attrs: { placeholder: "Genero", id: "inputGroupSelect02" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.asesor,
+                      "genero",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            }),
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [
+                  _vm._v("Seleccione Genero...")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("masculino")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("femenino")])
+              ]
+            ),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -37843,32 +37862,55 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.asesor.sede,
-                  expression: "asesor.sede"
-                }
-              ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "text", placeholder: "Sede" },
-              domProps: { value: _vm.asesor.sede },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.asesor.sede,
+                    expression: "asesor.sede"
                   }
-                  _vm.$set(_vm.asesor, "sede", $event.target.value)
+                ],
+                staticClass: "custom-select",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.asesor,
+                      "sede",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            }),
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [
+                  _vm._v("Seleccione Sede...")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("Ruta_N")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [
+                  _vm._v("Puertto_Seco")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("Buro")])
+              ]
+            ),
             _vm._v(" "),
             _c(
               "button",
-              { staticClass: "btn btn-warning", attrs: { type: "submit" } },
-              [_vm._v("Editar")]
+              { staticClass: "btn btn-success", attrs: { type: "submit" } },
+              [_vm._v("Guardar")]
             ),
             _vm._v(" "),
             _c(
@@ -37970,8 +38012,7 @@ var render = function() {
                   expression: "asesor.edad"
                 }
               ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "datetime", placeholder: "Edad" },
+              attrs: { type: "datetime-local" },
               domProps: { value: _vm.asesor.edad },
               on: {
                 input: function($event) {
@@ -37982,28 +38023,50 @@ var render = function() {
                 }
               }
             }),
+            _c("label", [
+              _vm._v("               Ingrese la fecha de nacimiento")
+            ]),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.asesor.genero,
-                  expression: "asesor.genero"
-                }
-              ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "text", placeholder: "Genero" },
-              domProps: { value: _vm.asesor.genero },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.asesor.genero,
+                    expression: "asesor.genero"
                   }
-                  _vm.$set(_vm.asesor, "genero", $event.target.value)
+                ],
+                staticClass: "custom-select",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.asesor,
+                      "genero",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            }),
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [
+                  _vm._v("Seleccione Genero...")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("masculino")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("femenino")])
+              ]
+            ),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -38027,27 +38090,50 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.asesor.sede,
-                  expression: "asesor.sede"
-                }
-              ],
-              staticClass: "form-control mb-2",
-              attrs: { type: "text", placeholder: "Sede" },
-              domProps: { value: _vm.asesor.sede },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.asesor.sede,
+                    expression: "asesor.sede"
                   }
-                  _vm.$set(_vm.asesor, "sede", $event.target.value)
+                ],
+                staticClass: "custom-select",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.asesor,
+                      "sede",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            }),
+              },
+              [
+                _c("option", { attrs: { selected: "" } }, [
+                  _vm._v("Seleccione Sede...")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [_vm._v("Ruta_N")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [
+                  _vm._v("Puertto_Seco")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("Buro")])
+              ]
+            ),
             _vm._v(" "),
             _c(
               "button",
@@ -38061,7 +38147,7 @@ var render = function() {
     _vm._v(" "),
     _c("h3", [_vm._v("Lista de Asesores:")]),
     _vm._v(" "),
-    _c("table", { staticClass: "table table-hover" }, [
+    _c("table", { staticClass: "table sm table-hover table-condensed" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(
@@ -38076,7 +38162,7 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(item.telefono))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(item.edad))]),
+            _c("td", [_vm._v(_vm._s(item.year) + "   ")]),
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(item.genero))]),
             _vm._v(" "),
@@ -50368,32 +50454,11 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('asesors', __webpack_require__(/*! ./components/AsesoresComponent.vue */ "./resources/js/components/AsesoresComponent.vue")["default"]);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 var app = new Vue({
   el: '#app'
 });

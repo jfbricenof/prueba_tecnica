@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-responsive">
     <form @submit.prevent="editarAsesor(asesor)" v-if="modoEditar">
       <h3>Editar Asesor</h3>
         <input type="text" class="form-control mb-2" 
@@ -8,34 +8,28 @@
         placeholder="Cedula" v-model="asesor.cedula">
         <input type="number" class="form-control mb-2" 
         placeholder="Telefono" v-model="asesor.telefono">
-        <input type="datetime" class="form-control mb-2" 
-        placeholder="Edad" v-model="asesor.edad">
-        <input type="text" class="form-control mb-2" 
-        placeholder="Genero" v-model="asesor.genero">
-        <!-- <select class="custom-select" v-model="asesor.genero">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select> -->
+        <input type="datetime-local" v-model="asesor.edad" 
+          ><label>               Ingrese la fecha de nacimiento</label>
+        <select class="custom-select"  placeholder="Genero" id="inputGroupSelect02" v-model="asesor.genero">
+            <option selected>Seleccione Genero...</option>
+            <option value="1">masculino</option>
+            <option value="2">femenino</option>
+         </select>
 
         <input type="text" class="form-control mb-2" 
         placeholder="Cliente" v-model="asesor.cliente">
-        <input type="text" class="form-control mb-2" 
-        placeholder="Sede" v-model="asesor.sede">
-
-        <!-- <select class="custom-select" v-model="asesor.sede">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+         <select class="custom-select" v-model="asesor.sede">
+            <option selected>Seleccione Sede...</option>
+            <option value="1">Ruta_N</option>
+            <option value="2">Puertto_Seco</option>
+            <option value="3">Buro</option>
         </select>
-         -->
-      <button class="btn btn-warning" type="submit">Editar</button>
+      <button class="btn btn-success" type="submit">Guardar</button>
       <button class="btn btn-danger" type="submit" 
         @click="cancelarEdicion">Cancelar</button>
     </form>
-    <!-- insertar asesores -->
+
+    <!-- agregar asesores -->
     <form @submit.prevent="agregar" v-else>
       <h3>Agregar Asesor</h3>
       <input type="text" class="form-control mb-2" 
@@ -44,37 +38,28 @@
         placeholder="Cedula" v-model="asesor.cedula">
         <input type="number" class="form-control mb-2" 
         placeholder="Telefono" v-model="asesor.telefono">
-        <input type="datetime" class="form-control mb-2" 
-        placeholder="Edad" v-model="asesor.edad">
-        <input type="text" class="form-control mb-2" 
-        placeholder="Genero" v-model="asesor.genero">
-        <!-- <select class="custom-select" v-model="asesor.genero">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select> -->
-
+          <input type="datetime-local" v-model="asesor.edad" 
+          ><label>               Ingrese la fecha de nacimiento</label>
+        <select class="custom-select" v-model="asesor.genero" >
+            <option selected>Seleccione Genero...</option>
+            <option value="1">masculino</option>
+            <option value="2">femenino</option>
+         </select>
         <input type="text" class="form-control mb-2" 
         placeholder="Cliente" v-model="asesor.cliente">
-        <input type="text" class="form-control mb-2" 
-        placeholder="Sede" v-model="asesor.sede">
-
-        <!-- <select class="custom-select" v-model="asesor.sede">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select> -->
-
-     
+        <select class="custom-select" v-model="asesor.sede">
+            <option selected>Seleccione Sede...</option>
+            <option value="1">Ruta_N</option>
+            <option value="2">Puertto_Seco</option>
+            <option value="3">Buro</option>
+        </select>
       <button class="btn btn-primary" type="submit">Agregar</button>
     </form>
-
+  
     <!-- lista de asesores -->
     <hr>
     <h3>Lista de Asesores:</h3>
-        <table class="table table-hover" >
+        <table class="table sm table-hover table-condensed" >
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -96,7 +81,7 @@
                     <td>{{item.nombre}}</td>
                     <td>{{item.cedula}}</td>
                     <td>{{item.telefono}}</td>
-                    <td>{{item.edad}}</td>
+                    <td>{{item.year}}   </td>
                     <td>{{item.genero}}</td>
                     <td>{{item.cliente}}</td>
                     <td>{{item.sede}}</td>
@@ -108,7 +93,8 @@
                 @click="eliminarAsesor(item, index)">Eliminar</button></td>
                     </tr>
             </tbody>
-        </table>
+          </table>
+          
   </div>
 </template>
 
@@ -118,7 +104,7 @@ export default {
     return {
       asesors: [],
       modoEditar: false,
-      asesor: {nombre: '', cedula: '',telefono: '', edad: '',genero: '', cliente: '',sede: ''}
+      asesor: {nombre: '', cedula: '',telefono: '', edad: '', year:'',genero: '', cliente: '',sede: ''}
     }
   },
   created(){
@@ -126,17 +112,18 @@ export default {
       this.asesors = res.data;
     })
   },
+
   methods:{
     agregar(){
       if(this.asesor.nombre.trim() === '' || this.asesor.cedula.trim() === ''||
-      this.asesor.telefono.trim() === '' || this.asesor.edad.trim() === ''||
+      this.asesor.telefono.trim() === '' ||  this.asesor.edad.trim() === ''||
       this.asesor.genero.trim() === '' || this.asesor.cliente.trim() === ''||
       this.asesor.sede.trim() === ''){
         alert('Debes completar todos los campos antes de guardar');
         return;
       }
       const asesorNueva = this.asesor;
-      this.asesor = {nombre: '', cedula: '',telefono: '', edad: '',genero: '', cliente: '',sede: ''};    
+      this.asesor = {nombre: '', cedula: '',telefono: '', edad: '', year:'',genero: '', cliente: '',sede: ''};    
       axios.post('/asesors', asesorNueva)
         .then((res) =>{
           const asesorServidor = res.data;
@@ -144,10 +131,16 @@ export default {
         })
     },
     editarFormulario(item){
-      this.asesor.nombre = item.nombre;
-      this.asesor.descripcion = item.descripcion;
-      this.asesor.id = item.id;
-      this.modoEditar = true;
+        this.asesor.nombre=item.nombre;
+        this.asesor.cedula=item.cedula;
+        this.asesor.telefono=item.telefono;
+        this.asesor.edad=item.edad;
+        this.asesor.genero=item.genero;
+        this.asesor.cliente=item.cliente;
+        this.asesor.sede=item.sede;
+        this.asesor.id=item.id;
+        this.modoEditar = true;
+                    
     },
     editarAsesor(asesor){
       const params = {nombre: asesor.nombre, cedula: asesor.cedula,telefono: asesor.telefono, edad: asesor.edad,genero: asesor.genero, cliente: asesor.cliente,sede: asesor.sede};
@@ -156,6 +149,9 @@ export default {
           this.modoEditar = false;
           const index = this.asesors.findIndex(item => item.id === asesor.id);
           this.asesors[index] = res.data;
+          axios.get('/asesors').then(res=>{
+            this.asesors = res.data;
+          })
         })
     },
     eliminarAsesor(asesor, index){
@@ -169,7 +165,7 @@ export default {
     },
     cancelarEdicion(){
       this.modoEditar = false;
-      this.asesor = {nombre: '', cedula: '',telefono: '', edad: '',genero: '', cliente: '',sede: ''};
+      this.asesor = {nombre: '', cedula: '',telefono: '', edad: '', year:'',genero: '', cliente: '',sede: ''};
     }
   }
 }

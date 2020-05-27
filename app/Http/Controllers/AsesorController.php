@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Asesor;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Mockery\Undefined;
 
 class AsesorController extends Controller
 {
@@ -14,11 +18,18 @@ class AsesorController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            return Asesor::where('user_id', auth()->id())->get();
+        if (Auth::check()) {
+           
+            return Asesor::all();
         }else{
-            return view('home');
-        }
+                return view('home');
+            }
+
+        // if($request->ajax()){
+        //     return Asesor::where('user_id', auth()->id())->get();
+        // }else{
+        //     return view('home');
+        // }
     }
 
     /**
@@ -44,6 +55,7 @@ class AsesorController extends Controller
         $asesor->cedula = $request->cedula;
         $asesor->telefono = $request->telefono;
         $asesor->edad = $request->edad;
+        $asesor->year = Carbon::createFromDate($request->edad)->age;
         $asesor->genero = $request->genero;
         $asesor->cliente = $request->cliente;
         $asesor->sede = $request->sede;
@@ -61,7 +73,7 @@ class AsesorController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -89,6 +101,7 @@ class AsesorController extends Controller
         $asesor->cedula = $request->cedula;
         $asesor->telefono = $request->telefono;
         $asesor->edad = $request->edad;
+        $asesor->year = Carbon::createFromDate($request->edad)->age;
         $asesor->genero = $request->genero;
         $asesor->cliente = $request->cliente;
         $asesor->sede = $request->sede;
